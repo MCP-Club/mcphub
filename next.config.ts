@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   },
   webpack: (config) => {
     config.module.rules.push({
-      test: /\.(png|jpg|gif|svg|ico|ttf|eot|woff|woff2)$/,
+      test: /\.(woff|woff2|eot|ttf|otf)$/,
       use: {
         loader: 'file-loader',
         options: {
