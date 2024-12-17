@@ -1,20 +1,20 @@
 import { motion } from 'framer-motion';
-import { Upload, Search, Shield, Users } from 'lucide-react';
+import { Hammer, Search, Shield, Users } from 'lucide-react';
 
 const features = [
   {
-    name: 'Easy Uploads',
-    description: 'Upload your MCPs quickly and securely. Support for various file formats.',
-    icon: Upload,
+    name: 'Easy Management',
+    description: 'Manage your MCP tools effortlessly. Support for Claude for Desktop,',
+    icon: Hammer,
   },
   {
-    name: 'Search & Filter',
-    description: 'Find the MCPs that matter to you, with advanced search options and metadata filtering.',
+    name: 'Search & Recommendation',
+    description: 'Find the MCP tools that fits your need, or handle the tools selection for your needs.',
     icon: Search,
   },
   {
     name: 'Secure Access',
-    description: 'Protect your data with secure logins and customizable access permissions.',
+    description: 'Protect your credentials with secure access permissions and encryption.',
     icon: Shield,
   },
   {
