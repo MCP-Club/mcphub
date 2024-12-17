@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import waveImage from '@/assets/wave.png';
+import waveSvg from '@/assets/waveIcon.svg';
 
 export function Hero() {
   return (
@@ -22,9 +22,9 @@ export function Hero() {
             className="flex items-center justify-center"
           >
             <Image
-              src={waveImage}
+              src={waveSvg}
               alt="Wave"
-              className="h-36 w-36"
+              className="h-64 w-64"
             />
           </motion.div>
           
