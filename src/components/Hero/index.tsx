@@ -34,7 +34,7 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            Welcome to MCP Hub
+            Welcome to Wave
           </motion.h1>
           
           <motion.p 
