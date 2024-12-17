@@ -8,7 +8,7 @@ export const features = [
                   Our platform eliminates the need for manual configuration, offering 
                   a streamlined experience that saves you time and effort.`,
     icon: Hammer,
-    imageUrl: 'https://plus.unsplash.com/premium_photo-1677094310919-d0361465d3be?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1720287601920-ee8c503af775?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
   {
     title: 'Tool Upload and Sharing',
@@ -24,6 +24,6 @@ export const features = [
                   and guidance on using MCP tools, optimizing workflows, and troubleshooting—all 
                   powered by AI for an enhanced experience.`,
     icon: SendHorizontal,
-    imageUrl: 'https://plus.unsplash.com/premium_photo-1720287601920-ee8c503af775?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1677094310919-d0361465d3be?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
 ];
