@@ -8,7 +8,7 @@ export const SectionHeader: FC = () => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
   >
-    <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-4">
+    <h2 className="text-4xl font-bold tracking-tight mb-4 bg-gradient-to-r from-sky-400 to-indigo-700 bg-clip-text text-transparent">
       What is Wave?
     </h2>
     <p className="text-xl leading-8 text-gray-600 text-justify">

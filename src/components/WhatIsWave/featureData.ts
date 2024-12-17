@@ -16,7 +16,7 @@ export const features = [
                   but also supports uploading your own tools to share with the community. Expand 
                   the ecosystem and make your tools available with just a few clicks.`,
     icon: CloudUpload,
-    imageUrl: 'https://liblibai-tmp-image.liblib.cloud/sd-images/526c597435b8d93a3d10e7841fc55ecc36baa503218e068a00639fca2b35b678.png?Token=dbc2276635064414875973da815a569f',
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1681487942927-e1a2786e6036?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
   {
     title: 'AI-Assisted Workflow',

@@ -24,12 +24,12 @@ export function Hero() {
             <Image
               src={waveSvg}
               alt="Wave"
-              className="h-64 w-64"
+              className="h-56 w-56"
             />
           </motion.div>
           
           <motion.h1 
-            className="mt-8 text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-sky-800 transition-all duration-200"
+            className="mt-8 text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight text-sky-800 transition-all duration-200"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}

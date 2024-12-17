@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
+import Image from 'next/image';
 
 interface FeatureCardProps {
   title: string;
@@ -29,14 +30,17 @@ export const FeatureCard: FC<FeatureCardProps> = ({
     <div className={`flex flex-col lg:flex-row gap-12 items-center ${
       isReversed ? 'lg:flex-row-reverse' : ''
     }`}>
-      <div className="lg:w-1/2">
-        <div className="relative h-[400px] overflow-hidden rounded-2xl shadow-xl">
-          <img
+      <div className="w-full px-12 lg:w-1/2 lg:px-0">
+        <div className="relative h-[300px] md:h-[350px] lg:h-[400px] overflow-hidden rounded-2xl shadow-xl">
+          <Image
             src={imageUrl}
             alt={title}
-            className="h-full w-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-sky-600/30 to-indigo-600/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-sky-400/30 to-indigo-400/30" />
         </div>
       </div>
       
@@ -49,7 +53,7 @@ export const FeatureCard: FC<FeatureCardProps> = ({
             {title}
           </h3>
         </div>
-        <p className="text-lg leading-8 text-gray-600">
+        <p className="text-lg leading-8 text-gray-600 text-justify">
           {description}
         </p>
         <motion.div 
