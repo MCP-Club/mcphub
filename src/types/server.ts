@@ -10,6 +10,6 @@ export interface ServerInfo {
   commandInfo: {
     command: string;
     args: string[];
-    env?: { [key: string]: string | undefined };
+    env?: { [key: string]: string};
   };
 }

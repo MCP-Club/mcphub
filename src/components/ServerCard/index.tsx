@@ -54,8 +54,18 @@ export function ServerCard({ server, index }: ServerCardProps) {
 
         <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
           <div className="flex items-center gap-1">
-            <Star className="w-4 h-4 text-yellow-400" />
-            <span>{server.rating}/5</span>
+            {[...Array(5)].map((_, index) => (
+              <Star 
+                key={index}
+                className={`w-4 h-4 ${
+                  index < Math.floor(server.rating)
+                    ? 'text-yellow-400 fill-yellow-400'
+                    : index < server.rating
+                    ? 'text-yellow-400 fill-yellow-400 opacity-50'
+                    : 'text-gray-300 dark:text-gray-600'
+                }`}
+              />
+            ))}
           </div>
           <div className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
