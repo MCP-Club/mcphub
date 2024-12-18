@@ -32,18 +32,13 @@ const components: { title: string; href: string; description: string }[] = [
   {
     title: "Desktop",
     href: "/products/hub",
-    description: "Containerize and share any application on any cloud platform.",
+    description: "Easily manage all your MCP tools in one place.",
   },
   {
     title: "Hub",
     href: "/products/hub",
-    description: "Find and share container images with your team and the community.",
-  },
-  {
-    title: "Compose",
-    href: "/products/hub",
-    description: "Define and run multi-container applications with Docker.",
-  },
+    description: "Find and share MCP tools with your team and the community.",
+  }
 ]
 
 export function Navbar() {
@@ -58,16 +53,16 @@ export function Navbar() {
           />
           <span className="hidden text-2xl font-bold sm:inline-block pl-2 text-sky-700">Wave mcp</span>
         </Link>
-        <NavigationMenu className="hidden md:flex ml-auto">
+        <NavigationMenu className="hidden lg:flex ml-auto">
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger className="text-lg font-bold">Products</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                  <li className="row-span-3">
+                  <li className="row-span-2">
                     <NavigationMenuLink asChild>
                       <Link
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-6 no-underline outline-none focus:shadow-md"
                         href="/"
                       >
                         <Image src={Wave} alt="Wave" className="h-24 w-24"></Image>
@@ -85,6 +80,7 @@ export function Navbar() {
                       key={component.title}
                       title={component.title}
                       href={component.href}
+                      className="row-span-1 h-full"
                     >
                       {component.description}
                     </ListItem>
@@ -123,13 +119,13 @@ export function Navbar() {
             <Input
               type="search"
               placeholder="Search..."
-              className="md:w-[200px] lg:w-[300px]"
+              className="w-auto md:w-[200px] lg:w-[300px]"
             />
           </div>
           <Button className="hidden md:inline-flex">Sign In</Button>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">
+              <Button variant="outline" size="icon" className="lg:hidden">
                 <Whale className="h-4 w-4" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
@@ -153,18 +149,6 @@ export function Navbar() {
                   className="text-sm font-medium hover:underline"
                 >
                   Developers
-                </Link>
-                <Link
-                  href="/pricing"
-                  className="text-sm font-medium hover:underline"
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="/blog"
-                  className="text-sm font-medium hover:underline"
-                >
-                  Blog
                 </Link>
                 <Link
                   href="/about"
@@ -202,7 +186,7 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
+          <div className="text-sm font-medium leading-none ">{title}</div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>

@@ -56,7 +56,7 @@ export function Hero() {
               Download Wave
             </a>
             <a href="/products/hub" className="text-lg font-semibold leading-6 text-gray-600 hover:text-sky-600 transition-colors duration-200">
-              Learn More <span aria-hidden="true">→</span>
+              To mcp hubs <span aria-hidden="true">→</span>
             </a>
           </motion.div>
         </motion.div>

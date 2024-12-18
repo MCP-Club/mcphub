@@ -70,7 +70,7 @@ export default function HubPage() {
   return (
     <div className="container mx-auto px-4 py-16 relative min-h-screen">
       <PageHeader 
-        title="MCP Server Hub"
+        title="MCP Hub"
         description="Discover and connect with powerful MCP servers"
       />
       

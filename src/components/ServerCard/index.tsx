@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Star, Calendar, User } from 'lucide-react';
 import { ServerInfo } from '@/types/server';
+import wave from '@/assets/wave.png';
+import { useState } from 'react';
 
 interface ServerCardProps {
   server: ServerInfo;
@@ -9,6 +11,9 @@ interface ServerCardProps {
 }
 
 export function ServerCard({ server, index }: ServerCardProps) {
+
+  const [imgSrc, setImgSrc] = useState(server.logoUrl || wave);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -20,10 +25,13 @@ export function ServerCard({ server, index }: ServerCardProps) {
         <div className="flex items-center gap-4 mb-4">
           <div className="w-12 h-12 relative">
             <Image
-              src={server.logoUrl}
+              src={imgSrc}
               alt={`${server.title} logo`}
               fill
               className="object-contain"
+              onError={() => {
+                setImgSrc(wave);
+              }}
             />
           </div>
           <div>
