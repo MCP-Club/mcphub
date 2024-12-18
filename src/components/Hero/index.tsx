@@ -55,7 +55,7 @@ export function Hero() {
             <a href="#" className="rounded-md bg-sky-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 transition-all duration-200">
               Download Wave
             </a>
-            <a href="#" className="text-lg font-semibold leading-6 text-gray-600 hover:text-sky-600 transition-colors duration-200">
+            <a href="/products/hub" className="text-lg font-semibold leading-6 text-gray-600 hover:text-sky-600 transition-colors duration-200">
               Learn More <span aria-hidden="true">→</span>
             </a>
           </motion.div>

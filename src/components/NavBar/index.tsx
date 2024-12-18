@@ -31,7 +31,7 @@ import Wave from "@/assets/wave.svg"
 const components: { title: string; href: string; description: string }[] = [
   {
     title: "Desktop",
-    href: "/products/desktop",
+    href: "/products/hub",
     description: "Containerize and share any application on any cloud platform.",
   },
   {
@@ -41,7 +41,7 @@ const components: { title: string; href: string; description: string }[] = [
   },
   {
     title: "Compose",
-    href: "/products/compose",
+    href: "/products/hub",
     description: "Define and run multi-container applications with Docker.",
   },
 ]
@@ -70,12 +70,12 @@ export function Navbar() {
                         className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                         href="/"
                       >
-                        <Whale className="h-6 w-6" />
+                        <Image src={Wave} alt="Wave" className="h-24 w-24"></Image>
                         <div className="mb-2 mt-4 text-lg font-medium">
-                          Docker
+                          Wave
                         </div>
                         <p className="text-sm leading-tight text-muted-foreground">
-                          Develop, ship, and run applications with containers.
+                          Discover, manager, and share MCP tools for LLM client
                         </p>
                       </Link>
                     </NavigationMenuLink>
@@ -138,7 +138,7 @@ export function Navbar() {
               <SheetHeader>
                 <SheetTitle>Menu</SheetTitle>
                 <SheetDescription>
-                  Access Docker resources and navigation
+                  Access Wave resources and navigation
                 </SheetDescription>
               </SheetHeader>
               <div className="grid gap-4 py-4">
