@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Star, Calendar, User } from 'lucide-react';
 import { ServerInfo } from '@/types/server';
@@ -10,20 +9,17 @@ interface ServerCardProps {
   index: number;
 }
 
-export function ServerCard({ server, index }: ServerCardProps) {
+export function ServerCard({ server }: ServerCardProps) {
 
   const [imgSrc, setImgSrc] = useState(server.logoUrl || wave);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+    <div
+      className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-200"
     >
-      <div className="p-6 z-10">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-12 h-12 relative">
+      <div className="p-4">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-10 relative">
             <Image
               src={imgSrc}
               alt={`${server.title} logo`}
@@ -35,7 +31,7 @@ export function ServerCard({ server, index }: ServerCardProps) {
             />
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
               {server.title}
             </h3>
             <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
@@ -45,15 +41,15 @@ export function ServerCard({ server, index }: ServerCardProps) {
           </div>
         </div>
 
-        <p className="text-gray-600 dark:text-gray-300 mb-4">
+        <p className="text-gray-600 dark:text-gray-300 mb-3 text-sm">
           {server.description}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-3">
           {server.tags.map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 text-sm bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 rounded-full"
+              className="px-2 py-0.5 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded"
             >
               {tag}
             </span>
@@ -82,11 +78,11 @@ export function ServerCard({ server, index }: ServerCardProps) {
         </div>
       </div>
 
-      <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700/50">
+      <div className="px-4 py-3 bg-gray-50 dark:bg-gray-700/30 border-t border-gray-200 dark:border-gray-700">
         <code className="text-sm font-mono text-gray-600 dark:text-gray-300">
           {`${server.commandInfo.command} ${server.commandInfo.args.join(' ')}`}
         </code>
       </div>
-    </motion.div>
+    </div>
   );
 }

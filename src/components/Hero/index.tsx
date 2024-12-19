@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import waveSvg from '@/assets/waveIcon.svg';
+import wave from '@/assets/wave.svg';
 
 export function Hero() {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-sky-100 to-white py-24 sm:py-32">
+    <div className="relative overflow-hidden bg-gradient-to-b from-sky-100 to-white pb-24 sm:pb-32 pt-4">
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div 
@@ -21,15 +21,27 @@ export function Hero() {
             transition={{ duration: 0.5 }}
             className="flex items-center justify-center"
           >
-            <Image
-              src={waveSvg}
-              alt="Wave"
-              className="h-56 w-56"
-            />
+            <motion.div
+              animate={{ 
+                y: [0, -20, 0],
+                rotate: [0, 2, 0]
+              }}
+              transition={{ 
+                duration: 6,
+                ease: "easeInOut",
+                repeat: Infinity,
+              }}
+            >
+              <Image
+                src={wave}
+                alt="Wave"
+                className="h-96 w-96"
+              />
+            </motion.div>
           </motion.div>
           
           <motion.h1 
-            className="mt-8 text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight text-sky-800 transition-all duration-200"
+            className="mt-4 text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight text-sky-800 transition-all duration-200"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -38,7 +50,7 @@ export function Hero() {
           </motion.h1>
           
           <motion.p 
-            className="mt-6 text-2xl font-semibold leading-8 text-gray-600 max-w-2xl mx-auto"
+            className="mt-6 text-2xl font-semibold leading-8 ·text-gray-600 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}

@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/sheet"
 
 import Image from "next/image"
-import Wave from "@/assets/wave.svg"
+import waveIcon from "@/assets/waveIcon.svg"
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -41,17 +41,17 @@ const components: { title: string; href: string; description: string }[] = [
   }
 ]
 
-export function Navbar() {
+export function HomeNavbar() {
   return (
     <div className="border-b">
       <div className="flex h-20 items-center px-12 justify-between">
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <Image
-            src={Wave}
+            src={waveIcon}
             alt="Wave"
-            className="h-20 w-20"
+            className="h-14 w-14"
           />
-          <span className="hidden text-2xl font-bold sm:inline-block pl-2 text-sky-700">Wave mcp</span>
+          <span className="hidden text-2xl font-bold sm:inline-block pl-2 text-sky-700">MCP hub</span>
         </Link>
         <NavigationMenu className="hidden lg:flex ml-auto">
           <NavigationMenuList>
@@ -65,7 +65,7 @@ export function Navbar() {
                         className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-6 no-underline outline-none focus:shadow-md"
                         href="/"
                       >
-                        <Image src={Wave} alt="Wave" className="h-24 w-24"></Image>
+                        <Image src={waveIcon} alt="Wave" className="h-24 w-24"></Image>
                         <div className="mb-2 mt-4 text-lg font-medium">
                           Wave
                         </div>

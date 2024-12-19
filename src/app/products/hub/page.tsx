@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { ServerCard } from '@/components/ServerCard';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { ErrorDisplay } from '@/components/ErrorDisplay';
-import { PageHeader } from '@/components/PageHeader';
+import { HubNavbar } from '@/components/NavBar/Hub';
 import type { ServerInfo } from '@/types/server';
 
 export default function HubPage() {
@@ -68,36 +68,20 @@ export default function HubPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16 relative min-h-screen">
-      <PageHeader 
-        title="MCP Hub"
-        description="Discover and connect with powerful MCP servers"
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <HubNavbar 
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearch={handleSearch}
       />
       
-      <div className="mb-8">
-        <div className="relative max-w-2xl mx-auto">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyUp={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
-            placeholder="Search servers..."
-            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-700"
-          />
-          <button
-            onClick={() => handleSearch(searchQuery)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-          >
-            Search
-          </button>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {servers.map((server, index) => (
+            <ServerCard key={server.id} server={server} index={index} />
+          ))}
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {servers.map((server, index) => (
-          <ServerCard key={server.id} server={server} index={index} />
-        ))}
-      </div>
+      </main>
     </div>
   );
 }
