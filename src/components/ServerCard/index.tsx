@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Star, Calendar, User } from 'lucide-react';
 import { ServerInfo } from '@/types/server';
-import wave from '@/assets/wave.png';
+import mcpDark from '@/assets/mcp-dark.svg';
 import { useState } from 'react';
 
 interface ServerCardProps {
@@ -11,7 +11,7 @@ interface ServerCardProps {
 
 export function ServerCard({ server }: ServerCardProps) {
 
-  const [imgSrc, setImgSrc] = useState(server.logoUrl || wave);
+  const [imgSrc, setImgSrc] = useState(server.logoUrl || mcpDark);
 
   return (
     <div
@@ -24,9 +24,9 @@ export function ServerCard({ server }: ServerCardProps) {
               src={imgSrc}
               alt={`${server.title} logo`}
               fill
-              className="object-contain"
+              className="object-contain rounded-lg"
               onError={() => {
-                setImgSrc(wave);
+                setImgSrc(mcpDark);
               }}
             />
           </div>
