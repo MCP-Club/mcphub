@@ -1,6 +1,6 @@
 'use client';
 
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import mcpDark from '@/assets/mcp-dark.svg'
@@ -41,8 +41,19 @@ export function HubNavbar({ onSearch, searchQuery, setSearchQuery }: HubNavbarPr
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyUp={(e) => e.key === 'Enter' && onSearch(searchQuery)}
                 placeholder="Search for servers..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm"
+                className="block w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => {
+                    setSearchQuery('');
+                    onSearch('');
+                  }}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
             </div>
           </div>
 
