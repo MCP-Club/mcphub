@@ -11,8 +11,18 @@ export default function HubPage() {
   const { servers, error, loading, notFound, handleSearch, fetchServers } = useMCPServers();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  
-  const categories = Array.from(new Set(servers.flatMap(server => server.tags))).sort();
+
+  const categoriesMap = servers.reduce<Map<string, number>>((acc, server) => {
+    server.tags.forEach(tag => {
+      acc.set(tag, (acc.get(tag) || 0) + 1);
+    });
+    return acc;
+  }, new Map<string, number>());
+
+  const categories = Array.from(categoriesMap.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   const filteredServers = servers.filter(server => 
     !selectedCategory || server.tags.includes(selectedCategory)
   );
@@ -63,15 +73,18 @@ export default function HubPage() {
               <div className="space-y-2">
                 {categories.map((category) => (
                   <button
-                    key={category}
-                    onClick={() => handleCategoryClick(category)}
-                    className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                      selectedCategory === category
+                    key={category.name}
+                    onClick={() => handleCategoryClick(category.name)}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors ${
+                      selectedCategory === category.name
                         ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
                         : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                     }`}
                   >
-                    {category}
+                    <span>{category.name}</span>
+                    <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+                      {category.count}
+                    </span>
                   </button>
                 ))}
               </div>
