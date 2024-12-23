@@ -8,6 +8,10 @@ export interface ServerInfo {
   logoUrl: string;
   publishDate: string;
   rating: number;
+  sources: {
+    github: string;
+    npm: string;
+  }
   commandInfo: {
     command: string;
     args: string[];

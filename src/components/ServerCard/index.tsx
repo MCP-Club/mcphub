@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Star, Calendar, User } from 'lucide-react';
 import { ServerInfo } from '@/types/server';
 import mcpDark from '@/assets/mcp-dark.svg';
@@ -14,8 +15,9 @@ export function ServerCard({ server }: ServerCardProps) {
   const [imgSrc, setImgSrc] = useState(server.logoUrl || mcpDark);
 
   return (
-    <div
-      className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-200"
+    <Link 
+      href={`/servers/${server.id}`}
+      className="block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-md transition-all duration-200"
     >
       <div className="p-4">
         <div className="flex items-center gap-3 mb-3">
@@ -83,6 +85,6 @@ export function ServerCard({ server }: ServerCardProps) {
           {`${server.commandInfo.command} ${server.commandInfo.args.join(' ')}`}
         </code>
       </div>
-    </div>
+    </Link>
   );
 }

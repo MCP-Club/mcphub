@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { ServerCard } from '@/components/ServerCard';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { ErrorDisplay } from '@/components/ErrorDisplay';
@@ -10,7 +11,8 @@ import { CategoryList } from '@/components/Categories';
 
 export default function HubPage() {
   const { servers, error, loading, notFound, handleSearch, fetchServers } = useMCPServers();
-  const [searchQuery, setSearchQuery] = useState('');
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categoriesMap = servers.reduce<Map<string, number>>((acc, server) => {
@@ -29,16 +31,14 @@ export default function HubPage() {
   }, [fetchServers]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (searchQuery.trim()) {
-        handleSearch(searchQuery);
-      } else if (searchQuery === '') {
-        // Reset to initial server list when search query is cleared
-        fetchServers();
-      }
-    }, 500); // 500ms delay
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+    const query = searchParams.get('search') || '';
+    setSearchQuery(query);
+    if (query.trim()) {
+      handleSearch(query);
+    } else {
+      fetchServers();
+    }
+  }, [searchParams]);
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(selectedCategory === category ? null : category);
@@ -56,7 +56,6 @@ export default function HubPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <HubNavbar 
         searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
         onSearch={handleSearch}
       />
       
@@ -76,7 +75,7 @@ export default function HubPage() {
                 ))}
               </div>
             ) : (
-              <div className="h-[50vh] flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow p-8">
+              <div className="h-[80vh] flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow p-8">
                 <svg className="w-16 h-16 text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>

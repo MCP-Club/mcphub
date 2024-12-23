@@ -3,16 +3,46 @@
 import { Search, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import mcpDark from '@/assets/mcp-dark.svg'
 import { ModeToggle } from '@/components/ModeToggle';
 
 interface HubNavbarProps {
   onSearch: (query: string) => void;
   searchQuery: string;
-  setSearchQuery: (query: string) => void;
 }
 
-export function HubNavbar({ onSearch, searchQuery, setSearchQuery }: HubNavbarProps) {
+export function HubNavbar({ onSearch, searchQuery }: HubNavbarProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [inputValue, setInputValue] = useState(searchQuery);
+
+  useEffect(() => {
+    setInputValue(searchQuery);
+  }, [searchQuery]);
+
+  const handleSearch = (query: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (query) {
+      params.set('search', query);
+    } else {
+      params.delete('search');
+    }
+    router.push(`/?${params.toString()}`);
+    onSearch(query);
+  };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (inputValue !== searchQuery) {
+        handleSearch(inputValue);
+      }
+    }, 800);
+
+    return () => clearTimeout(timeoutId);
+  }, [inputValue]);
+
   return (
     <nav className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,17 +67,17 @@ export function HubNavbar({ onSearch, searchQuery, setSearchQuery }: HubNavbarPr
               </div>
               <input
                 type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyUp={(e) => e.key === 'Enter' && onSearch(searchQuery)}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyUp={(e) => e.key === 'Enter' && handleSearch(inputValue)}
                 placeholder="Search for servers..."
                 className="block w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 sm:text-sm"
               />
-              {searchQuery && (
+              {inputValue && (
                 <button
                   onClick={() => {
-                    setSearchQuery('');
-                    onSearch('');
+                    setInputValue('');
+                    handleSearch('');
                   }}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 >
