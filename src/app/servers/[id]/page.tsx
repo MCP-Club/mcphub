@@ -40,25 +40,34 @@ const ServerDetails = () => {
   const server = servers[0]
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen dark:bg-gray-900">
       <HubNavbar 
         searchQuery={searchQuery}
         onSearch={handleSearch}
       />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {server ? (
-          <>
-            <ServerDetailsView server={server} />
-            {server.sources?.github && (
-              <div className="mt-8">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                  README from GitHub
-                </h2>
-                <GitHubReadme githubUrl={server.sources.github} />
+          <div className="container mx-auto px-4 py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {/* Left column - Server Details */}
+              <div className="lg:col-span-1">
+                <ServerDetailsView server={server} />
               </div>
-            )}
-          </>
+              
+              {/* Right column - GitHub README */}
+              <div className="lg:col-span-2">
+                {server.sources?.github && (
+                  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                      README from GitHub
+                    </h2>
+                    <GitHubReadme githubUrl={server.sources.github} />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         ) : null}
       </main>
     </div>
