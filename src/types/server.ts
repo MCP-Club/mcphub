@@ -3,6 +3,7 @@ export interface ServerInfo {
   title: string;
   description: string;
   tags: string[];
+  categories: string[];
   creator: string;
   logoUrl: string;
   publishDate: string;
