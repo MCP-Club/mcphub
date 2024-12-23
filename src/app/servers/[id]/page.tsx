@@ -9,7 +9,6 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { HubNavbar } from '@/components/NavBar/Hub';
 import { GitHubReadme } from '@/components/GitHubReadme';
-import { ServerInfo } from '@/types/server';
 
 const ServerDetails = () => {
   const params = useParams();
