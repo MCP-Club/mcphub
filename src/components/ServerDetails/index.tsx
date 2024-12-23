@@ -8,7 +8,7 @@ interface ServerDetailsViewProps {
 }
 
 export const ServerDetailsView = ({ server }: ServerDetailsViewProps) => (
-  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 h-full">
+  <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 h-auto">
     <ServerHeader server={server} />
     
     <p className="text-gray-700 dark:text-gray-300 mb-6">
