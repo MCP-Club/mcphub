@@ -84,7 +84,7 @@ export function GitHubReadme({ githubUrl }: GitHubReadmeProps) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 my-4">
+    <div className="bg-white dark:bg-gray-800">
       <div className="prose dark:prose-invert max-w-none">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{readme}</ReactMarkdown>
       </div>

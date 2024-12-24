@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { HubNavbar } from '@/components/NavBar/Hub';
 import { GitHubReadme } from '@/components/GitHubReadme';
 
+
 const ServerDetails = () => {
   const params = useParams();
   const serverId = params?.id as string;
@@ -39,7 +40,7 @@ const ServerDetails = () => {
   const server = servers[0]
   
   return (
-    <div className="min-h-screen dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <HubNavbar 
         searchQuery={searchQuery}
         onSearch={handleSearch}
@@ -58,9 +59,6 @@ const ServerDetails = () => {
               <div className="lg:col-span-2">
                 {server.sources?.github && (
                   <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                      README from GitHub
-                    </h2>
                     <GitHubReadme githubUrl={server.sources.github} />
                   </div>
                 )}
