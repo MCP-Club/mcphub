@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MCPHub - MCP Server Search & Discover & Collection Website",
+  title: "MCP Hub - MCP Server Search & Discover & Collection Website",
   description: "Discover, manage, and share model context protocol (MCP) tools for LLM clients",
   icons: {
     icon: "/images/mcp-dark.svg",
