@@ -10,24 +10,22 @@ import { useState } from 'react';
 import { HubNavbar } from '@/components/NavBar/Hub';
 import { GitHubReadme } from '@/components/GitHubReadme';
 
-
 const ServerDetails = () => {
   const params = useParams();
   const serverId = params?.id as string;
-  const { servers, error, loading, handleSearch } = useMCPServers();
+  const { servers, error, loading, handleSearch, handleSearchByID } = useMCPServers();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  
+
   useEffect(() => {
     if (serverId) {
-      handleSearch(serverId);
+      handleSearchByID(serverId);
     }
   }, [serverId]);
 
   useEffect(() => {
     setSearchQuery(searchParams.get('search') || '');
   }, [searchParams]);
-
 
   if (loading) {
     return <LoadingSpinner />;
@@ -37,24 +35,24 @@ const ServerDetails = () => {
     return <ErrorDisplay message={error} />;
   }
 
-  const server = servers[0]
-  
+  const server = servers[0];
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <HubNavbar 
+      <HubNavbar
         searchQuery={searchQuery}
         onSearch={handleSearch}
       />
 
-      <main className="max-w-7xl mx-auto px-4 px-4">
+      <main className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {server ? (
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               {/* Left column - Server Details */}
               <div className="lg:col-span-1">
                 <ServerDetailsView server={server} />
               </div>
-              
+
               {/* Right column - GitHub README */}
               <div className="lg:col-span-2">
                 {server.sources?.github && (

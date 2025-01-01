@@ -37,7 +37,32 @@ export function useMCPServers() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loading]);
+
+  const handleSearchByID = useCallback(async (id: string) => {
+    if (!id.trim() || loading) {
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    setNotFound(false);
+    try {
+      const response = await fetch(`https://registry.mcphub.io/registry/${id}`);
+      if (!response.ok) {
+        setError('Failed to search servers');
+        return;
+      }
+      const data = await response.json();
+      setServers(await processServers([data]));
+      if (data.length === 0) {
+        setNotFound(true);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to search servers');
+    } finally {
+      setLoading(false);
+    }
+  }, [loading]);
 
   const fetchServers = useCallback(async () => {
     if (loading) {
@@ -70,6 +95,7 @@ export function useMCPServers() {
     loading,
     notFound,
     handleSearch,
-    fetchServers
+    fetchServers,
+    handleSearchByID
   };
 }
