@@ -13,9 +13,9 @@ type RecentSearch = {
 }
 
 const RECENT_SEARCHES: RecentSearch[] = [
-  { id: 1, query: 'quantum computing' },
-  { id: 2, query: 'cybersecurity trends' },
-  { id: 3, query: 'neural networks' }
+  { id: 1, query: 'Post tweets and search for tweets by query' },
+  { id: 2, query: 'Manage Airtable bases' },
+  { id: 3, query: 'Retrieve information from the AWS Knowledge Base' }
 ]
 
 const SearchHeader = () => (
@@ -43,7 +43,7 @@ const SearchForm = ({
 }) => (
   <div className="relative flex w-full mb-8">
     <textarea
-      placeholder="Enter your search query or describe your needs ..."
+      placeholder={`Enter your search query\neg: I need to look up flight information`}
       value={searchQuery}
       onChange={(e) => onSearchChange(e.target.value)}
       onKeyDown={(e) => {
@@ -52,7 +52,7 @@ const SearchForm = ({
           onSubmit(e);
         }
       }}
-      className="w-full h-48 bg-white border-blue-600 border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2"
+      className="text-sm w-full h-48 bg-white border-blue-600 border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2"
     />
     <Button 
       onClick={onSubmit}
@@ -65,14 +65,22 @@ const SearchForm = ({
   </div>
 )
 
-const RecentSearches = ({ searches }: { searches: RecentSearch[] }) => (
-  <div className="text-sm">
-    <p className="mb-2 text-beige-text-secondary">$ Recent searches:</p>
-    <ul className="list-disc list-inside text-beige-text-primary">
+const RecentSearches = ({ searches, handleSearchClick }: { searches: RecentSearch[], handleSearchClick: (query: string) => void }) => (
+  <div className="space-y-3">
+    <div className="flex items-center gap-2 text-sm">
+      <span className="text-muted-foreground">$ Recent searches</span>
+    </div>
+    <div className="flex flex-wrap gap-3">
       {searches.map(search => (
-        <li key={search.id}>{search.query}</li>
+        <button
+          key={search.id}
+          onClick={() => handleSearchClick(search.query)}
+          className="px-2 py-1 text-xs text-left border border-black hover:bg-accent/50 transition-colors whitespace-nowrap"
+        >
+          {search.query}
+        </button>
       ))}
-    </ul>
+    </div>
   </div>
 )
 
@@ -118,6 +126,11 @@ export default function DiscoveryPage() {
     router.push(`/discovery?${params.toString()}`)
   }
 
+  const handleSearchClick = (query: string) => {
+    setSearchQuery(query)
+    handleSearch()
+  }
+
   return (
     <div className="min-h-screen bg-beige-background text-beige-text-primary font-mono p-8 flex flex-col items-center justify-center">
       <div className="w-full max-w-2xl">
@@ -145,7 +158,7 @@ export default function DiscoveryPage() {
             ))}
           </div>
         )}
-        {!searchQuery && <RecentSearches searches={RECENT_SEARCHES} />}
+        {!searchQuery && <RecentSearches searches={RECENT_SEARCHES} handleSearchClick={handleSearchClick} />}
         <Footer />
       </div>
     </div>
