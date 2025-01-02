@@ -4,24 +4,25 @@ import { Badge } from '@/components/ui/badge'
 
 export function ServerCard({ server }: { server: ServerInfo }) {
   return (
-    <Card className="bg-beige-card-background border-beige-border">
+    <Card className="bg-white border border-beige-input-border rounded-none shadow-none">
       <CardHeader>
         <div className="flex justify-between items-start">
-          <h3 className="text-lg font-semibold text-beige-text-primary">{server.name}</h3>
-          <Badge variant="secondary">{server.version}</Badge>
+          <h3 className="text-lg font-semibold text-beige-text-primary">{server.title}</h3>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-beige-text-secondary mb-4">{server.description}</p>
-        <div className="flex flex-wrap gap-2">
-          {server.tags.map((tag) => (
-            <Badge key={tag} variant="outline">{tag}</Badge>
-          ))}
+        <div className="space-y-2">
+          <p className="text-sm text-beige-text-secondary">{server.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {server.tags.map((tag) => (
+              <Badge key={tag} className='rounded-none bg-beige-text-primary text-white'>{tag}</Badge>
+            ))}
+          </div>
         </div>
       </CardContent>
       <CardFooter className="flex justify-between text-sm text-beige-text-secondary">
-        <span>ID: {server.id}</span>
-        {server.author && <span>By: {server.author}</span>}
+        <span className="font-mono">{server.id}</span>
+        {server.creator && <span>By: {server.creator}</span>}
       </CardFooter>
     </Card>
   )
