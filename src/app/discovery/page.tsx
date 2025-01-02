@@ -20,7 +20,7 @@ const RECENT_SEARCHES: RecentSearch[] = [
 
 const SearchHeader = () => (
   <div className="mb-8 text-left">
-    <h1 className="text-4xl font-semibold font-serif mb-2 flex items-center justify-start text-beige-text-heading">
+    <h1 className="text-5xl font-serif mb-2 flex items-center justify-start text-beige-text-heading">
       <Terminal className="mr-2" />
       The mcp server, discovery
     </h1>
@@ -38,37 +38,38 @@ const SearchForm = ({
 }: {
   searchQuery: string
   onSearchChange: (value: string) => void
-  onSubmit: (e: React.FormEvent) => void
+  onSubmit: () => void
   loading: boolean
 }) => (
   <div className="relative flex w-full mb-8">
     <textarea
-      placeholder={`Enter your search query\neg: I need to look up flight information`}
+      placeholder={`Enter your search query
+        \neg: I need to look up flight information`}
       value={searchQuery}
       onChange={(e) => onSearchChange(e.target.value)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
-          onSubmit(e);
+          onSubmit();
         }
       }}
-      className="text-sm w-full h-48 bg-white border-blue-600 border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2"
+      className="text-sm w-full h-44 bg-white border-orange-500 border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2"
     />
     <Button 
       onClick={onSubmit}
-      className="absolute right-2 bottom-2 bg-beige-button-background hover:bg-beige-button-hover text-beige-text-primary rounded-none px-4 py-1"
+      className="absolute right-2 bottom-2 bg-orange-500 hover:bg-orange-600 text-white font-mono text-md rounded-none px-4 py-2 flex items-center gap-3"
       disabled={loading}
     >
-      <Search className="mr-1 h-4 w-4" />
-      Search
+      <Search className="!size-5" />
+      SEARCH
     </Button>
   </div>
 )
 
-const RecentSearches = ({ searches, handleSearchClick }: { searches: RecentSearch[], handleSearchClick: (query: string) => void }) => (
+const PopularSearches = ({ searches, handleSearchClick }: { searches: RecentSearch[], handleSearchClick: (query: string) => void }) => (
   <div className="space-y-3">
     <div className="flex items-center gap-2 text-sm">
-      <span className="text-muted-foreground">$ Recent searches</span>
+      <span className="text-muted-foreground">$ Popular searches</span>
     </div>
     <div className="flex flex-wrap gap-3">
       {searches.map(search => (
@@ -86,8 +87,8 @@ const RecentSearches = ({ searches, handleSearchClick }: { searches: RecentSearc
 
 const Footer = () => (
   <div className="mt-8 text-xs text-beige-text-secondary text-center">
-    <p>Mcphub v1.0.0 | Powered by React & Next.js</p>
-    <p>{new Date().getFullYear()} Cyberdyne Systems</p>
+    <p>Mcp Compass v1.0.0 | Powered by React & Next.js</p>
+    <p>{new Date().getFullYear()} Mcp Club by Weight Wave</p>
   </div>
 )
 
@@ -132,7 +133,7 @@ export default function DiscoveryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-beige-background text-beige-text-primary font-mono p-8 flex flex-col items-center justify-center">
+    <main className="min-h-screen bg-beige-background text-beige-text-primary font-mono p-8 flex flex-col items-center justify-center">
       <div className="w-full max-w-2xl">
         <SearchHeader />
         <SearchForm 
@@ -158,9 +159,9 @@ export default function DiscoveryPage() {
             ))}
           </div>
         )}
-        {!searchQuery && <RecentSearches searches={RECENT_SEARCHES} handleSearchClick={handleSearchClick} />}
+        {!searchQuery && <PopularSearches searches={RECENT_SEARCHES} handleSearchClick={handleSearchClick} />}
         <Footer />
       </div>
-    </div>
+    </main>
   )
 }
