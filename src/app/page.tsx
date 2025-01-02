@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ServerCard } from '@/components/ServerCard';
+import { ServerCard } from '@/components/ServerCard/Hub';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { ErrorDisplay } from '@/components/ErrorDisplay';
 import { HubNavbar } from '@/components/NavBar/Hub';
