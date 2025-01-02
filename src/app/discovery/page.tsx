@@ -42,23 +42,28 @@ const SearchForm = ({
   onSubmit: (e: React.FormEvent) => void
   loading: boolean
 }) => (
-  <form onSubmit={onSubmit} className="flex w-full mb-8">
-    <Input
-      type="text"
-      placeholder="Enter your search query or describle your needs"
+  <div className="relative flex w-full mb-8">
+    <textarea
+      placeholder="Enter your search query or describe your needs ..."
       value={searchQuery}
       onChange={(e) => onSearchChange(e.target.value)}
-      className="flex-grow mr-2 bg-white border-blue-600 border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          onSubmit(e);
+        }
+      }}
+      className="w-full h-48 bg-white border-blue-600 border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2"
     />
     <Button 
-      type="submit" 
-      className="bg-beige-button-background hover:bg-beige-button-hover text-beige-text-primary rounded-none px-6"
+      onClick={onSubmit}
+      className="absolute right-2 bottom-2 bg-beige-button-background hover:bg-beige-button-hover text-beige-text-primary rounded-none px-4 py-1"
       disabled={loading}
     >
-      <Search className="mr-2" />
+      <Search className="mr-1 h-4 w-4" />
       Search
     </Button>
-  </form>
+  </div>
 )
 
 const RecentSearches = ({ searches }: { searches: RecentSearch[] }) => (
@@ -83,7 +88,7 @@ export default function DiscoveryPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '')
-  const { servers, error, loading, notFound, handleSearch: performSearch } = useMCPServers()
+  const { servers, error, loading, notFound, handleSearch: performSearch, reset } = useMCPServers()
 
   // Update search query and perform search when URL changes
   useEffect(() => {
@@ -94,14 +99,24 @@ export default function DiscoveryPage() {
     }
   }, [searchParams])
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Update URL with search query
+  // Debounced search effect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      handleSearch()
+    }, 800);
+
+    return () => clearTimeout(timeoutId);
+
+  }, [searchQuery]);
+
+  const handleSearch = () => {
     const params = new URLSearchParams()
     if (searchQuery) {
       params.set('query', searchQuery)
+    } else {
+      reset() // Reset the servers state when there's no query
     }
-    router.push(`/explore?${params.toString()}`)
+    router.push(`/discovery?${params.toString()}`)
   }
 
   return (

@@ -89,6 +89,13 @@ export function useMCPServers() {
     }
   }, []);
 
+  const reset = useCallback(() => {
+    setServers([]);
+    setError(null);
+    setLoading(false);
+    setNotFound(false);
+  }, []);
+
   return {
     servers,
     error,
@@ -96,6 +103,7 @@ export function useMCPServers() {
     notFound,
     handleSearch,
     fetchServers,
-    handleSearchByID
+    handleSearchByID,
+    reset
   };
 }
