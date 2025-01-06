@@ -10,6 +10,8 @@ import DiscoveryNavbar from '@/components/NavBar/discovery'
 import { useMCPServers } from '@/hooks/useMCPServers'
 import { ServerCard } from '@/components/server-card'
 import { Loading } from '@/components/Loading'
+import { useToast } from "@/hooks/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 
 type RecentSearch = {
   id: number
@@ -117,6 +119,7 @@ export default function DiscoveryPage() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('description') || '')
   const [aiPrompt, setAiPrompt] = useState(true)
   const { servers, error, loading, notFound, handleSearch: performSearch, reset } = useMCPServers()
+  const { toast } = useToast()
 
   // Update search description and perform search when URL changes
   useEffect(() => {
@@ -139,6 +142,14 @@ export default function DiscoveryPage() {
     }, 400);
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
+
+  useEffect(() => {
+    toast({
+      title: "Coming Soon!",
+      description: "Install mcp server easily - Client for Desktop",
+      className: "bg-beige-background border-beige-textarea-border",
+    })
+  }, [])
 
   const handleSearch = () => {
     const params = new URLSearchParams()
@@ -199,6 +210,7 @@ export default function DiscoveryPage() {
           <Footer />
         </div>
       </main>
+      <Toaster />
     </>
   )
 }
