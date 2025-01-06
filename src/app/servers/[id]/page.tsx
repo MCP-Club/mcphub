@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Spinner } from '@/components/Loading/spinner';
 import { ErrorDisplay } from '@/components/ErrorDisplay';
 import { useMCPServers } from '@/hooks/useMCPServers';
 import { ServerDetailsView } from '@/components/ServerDetails';
@@ -28,7 +28,7 @@ const ServerDetails = () => {
   }, [searchParams]);
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <Spinner />;
   }
 
   if (error) {

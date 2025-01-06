@@ -18,3 +18,19 @@ export interface ServerInfo {
     env?: { [key: string]: string};
   };
 }
+
+export interface MCPConfig {
+  id: string;
+  title: string;
+  description: string;
+  github_url?: string;
+  tags?: string[];
+}
+
+export interface SearchResult extends MCPConfig {
+  id: string;
+  title: string;
+  description: string;
+  github_url?: string;
+  score: number;
+}

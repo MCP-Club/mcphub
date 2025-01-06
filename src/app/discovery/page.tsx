@@ -1,12 +1,15 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
 import { Search, Terminal, Bird } from 'lucide-react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import DiscoveryNavbar from '@/components/NavBar/discovery'
 import { useMCPServers } from '@/hooks/useMCPServers'
 import { ServerCard } from '@/components/server-card'
-import { Switch } from "@/components/ui/switch"
+import { Loading } from '@/components/Loading'
 
 type RecentSearch = {
   id: number
@@ -20,13 +23,13 @@ const RECENT_SEARCHES: RecentSearch[] = [
 ]
 
 const SearchHeader = () => (
-  <div className="mb-8 text-left">
-    <h1 className="text-5xl font-serif mb-2 flex items-center justify-start text-beige-text-heading">
+  <div className="mb-4 text-left">
+    <h1 className="text-5xl font-serif mb-6 flex items-center justify-start text-beige-text-heading">
       <Terminal className="mr-2" />
       The mcp server, discovery
     </h1>
-    <p className="text-beige-text-secondary">
-      Find the right mcp server for your needs
+    <p className="text-beige-text-secondary text-md">
+      Find the right mcp server for you from <Link href="/servers" className="font-semibold text-orange-500 hover:text-cyan-600 transition-colors">250+ servers</Link> collected
     </p>
   </div>
 )
@@ -58,7 +61,7 @@ const SearchForm = ({
           onSubmit();
         }
       }}
-      className="text-sm w-full h-48 min-h-14 bg-white border-orange-500 border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2 resize-y"
+      className="text-sm w-full h-48 min-h-14 bg-white border-beige-textarea-border border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2 resize-y"
     />
     <div className="absolute left-4 bottom-2 flex items-center space-x-2">
       <Switch
@@ -73,7 +76,7 @@ const SearchForm = ({
     </div>
     <Button 
       onClick={onSubmit}
-      className="absolute right-2 bottom-2 bg-orange-500 hover:bg-orange-600 text-white font-mono text-md rounded-none px-4 py-2 flex items-center gap-3"
+      className="absolute right-2 bottom-2 bg-orange-500 hover:bg-cyan-600 text-white font-mono text-md rounded-none px-4 py-2 flex items-center gap-3"
       disabled={loading}
     >
       <Search className="!size-5" />
@@ -128,12 +131,13 @@ export default function DiscoveryPage() {
 
   // Debounced search effect
   useEffect(() => {
+    if (searchQuery) {
+      return
+    }
     const timeoutId = setTimeout(() => {
       handleSearch()
-    }, 800);
-
+    }, 400);
     return () => clearTimeout(timeoutId);
-
   }, [searchQuery]);
 
   const handleSearch = () => {
@@ -153,42 +157,48 @@ export default function DiscoveryPage() {
   }
 
   return (
-    <main className="min-h-screen bg-beige-background text-beige-text-primary font-mono p-8 flex flex-col items-center justify-center">
-      <div className="w-full max-w-2xl">
-        <SearchHeader />
-        <SearchForm 
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          onSubmit={handleSearch}
-          loading={loading}
-          aiPrompt={aiPrompt}
-          onAiPromptChange={setAiPrompt}
-        />
-        {error && (
-          <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
-            {error}
-          </div>
-        )}
-        {notFound && (
-          <div className="flex justify-center items-center gap-4">
-
-            <Bird className="w-10 h-10 text-beige-text-secondary stroke-orange-500 stroke-[1.5]" />
-
-            <div className="text-center text-beige-text-secondary">
-              No servers found for your search
+    <>
+      <DiscoveryNavbar />
+      <main className="min-h-screen pt-24 bg-beige-background text-beige-text-primary font-mono p-8 flex flex-col items-center justify-center">
+        <div className="w-full max-w-2xl">
+          <SearchHeader />
+          <SearchForm 
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onSubmit={handleSearch}
+            loading={loading}
+            aiPrompt={aiPrompt}
+            onAiPromptChange={setAiPrompt}
+          />
+          {error && (
+            <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
+              {error}
             </div>
-          </div>
-        )}
-        {servers.length > 0 && (
-          <div className="mt-8 space-y-4">
-            {servers.map((server) => (
-              <ServerCard key={server.id} server={server} />
-            ))}
-          </div>
-        )}
-        {!searchQuery && <PopularSearches searches={RECENT_SEARCHES} handleSearchClick={handleSearchClick} />}
-        <Footer />
-      </div>
-    </main>
+          )}
+          {notFound && (
+            <div className="mt-4 text-center">
+              <div className="inline-flex items-center gap-2 text-beige-text-secondary">
+                <Bird className="size-5" />
+                <span>No servers found</span>
+              </div>
+            </div>
+          )}
+          {loading && (
+            <div className="mt-4">
+              <Loading />
+            </div>
+          )}
+          {servers.length > 0 && (
+            <div className="mt-8 space-y-4">
+              {servers.map((server) => (
+                <ServerCard key={server.id} server={server} />
+              ))}
+            </div>
+          )}
+          {!searchQuery && <PopularSearches searches={RECENT_SEARCHES} handleSearchClick={handleSearchClick} />}
+          <Footer />
+        </div>
+      </main>
+    </>
   )
 }

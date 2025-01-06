@@ -3,14 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ServerCard } from '@/components/ServerCard/Hub';
-import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { Spinner } from '@/components/Loading/spinner';
 import { ErrorDisplay } from '@/components/ErrorDisplay';
 import { HubNavbar } from '@/components/NavBar/Hub';
 import { useMCPServers } from '@/hooks/useMCPServers';
 import { CategoryList } from '@/components/Categories';
 
 export default function HubPage() {
-  const { servers, error, loading, notFound, handleSearch, fetchServers } = useMCPServers();
+  const { servers, error, loading, notFound, handleSearch, loadServers } = useMCPServers();
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -27,8 +27,8 @@ export default function HubPage() {
   );
 
   useEffect(() => {
-    fetchServers();
-  }, [fetchServers]);
+    loadServers();
+  }, [loadServers]);
 
   useEffect(() => {
     const query = searchParams.get('search') || '';
@@ -36,7 +36,7 @@ export default function HubPage() {
     if (query.trim()) {
       handleSearch(query);
     } else {
-      fetchServers();
+      loadServers();
     }
   }, [searchParams]);
 
@@ -45,7 +45,7 @@ export default function HubPage() {
   };
 
   if (loading) {
-    return <LoadingSpinner />;
+    return <Spinner />;
   }
 
   if (error) {
