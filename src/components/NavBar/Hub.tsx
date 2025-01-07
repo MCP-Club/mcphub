@@ -48,7 +48,7 @@ export function HubNavbar({ onSearch, searchQuery }: HubNavbarProps) {
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
+            <Link href="/registry" className="flex items-center">
               <Image
                 src={mcpDark}
                 alt="MCP HUB Logo"
@@ -88,6 +88,12 @@ export function HubNavbar({ onSearch, searchQuery }: HubNavbarProps) {
           </div>
 
           <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium"
+            >
+              Discovery
+            </Link>
             <a
               href="https://modelcontextprotocol.io/quickstart"
               className="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium"

@@ -25,7 +25,7 @@ const DiscoveryNavbar = ({ className }: HubNavbarProps) => (
 
         <div className="flex items-center gap-4">
           <Link
-            href="/"
+            href="/registry"
             className="text-beige-text-secondary hover:text-orange-500 px-3 py-2 text-sm font-medium"
           >
             All servers

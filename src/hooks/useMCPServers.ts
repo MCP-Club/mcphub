@@ -92,8 +92,8 @@ export function useMCPServers() {
         setError('Failed to get recommendations');
         return;
       }
+      
       const searchResults = await response.json();
-      console.log(searchResults)
       const servers = await fetchServers(searchResults);
 
       setServers(await processServers(servers));

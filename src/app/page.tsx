@@ -1,97 +1,216 @@
-'use client';
+"use client"
 
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { ServerCard } from '@/components/ServerCard/Hub';
-import { Spinner } from '@/components/Loading/spinner';
-import { ErrorDisplay } from '@/components/ErrorDisplay';
-import { HubNavbar } from '@/components/NavBar/Hub';
-import { useMCPServers } from '@/hooks/useMCPServers';
-import { CategoryList } from '@/components/Categories';
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
+import { Search, Terminal, Bird } from 'lucide-react'
+import Link from 'next/link'
+import DiscoveryNavbar from '@/components/NavBar/discovery'
+import { useMCPServers } from '@/hooks/useMCPServers'
+import { ServerCard } from '@/components/server-card'
+import { Loading } from '@/components/Loading'
+import { useToast } from "@/hooks/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 
-export default function HubPage() {
-  const { servers, error, loading, notFound, handleSearch, loadServers } = useMCPServers();
-  const searchParams = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+type RecentSearch = {
+  id: number
+  description: string
+}
 
-  const categoriesMap = servers.reduce<Map<string, number>>((acc, server) => {
-    server.categories?.forEach(category => {
-      acc.set(category, (acc.get(category) || 0) + 1);
-    });
-    return acc;
-  }, new Map<string, number>());
+const RECENT_SEARCHES: RecentSearch[] = [
+  { id: 1, description: 'Post tweets and search for tweets by query' },
+  { id: 2, description: 'Manage Airtable bases' },
+  { id: 3, description: 'Retrieve information from the AWS Knowledge Base' }
+]
 
-  const filteredServers = servers.filter(server => 
-    !selectedCategory || server.categories?.includes(selectedCategory)
-  );
+const SearchHeader = () => (
+  <div className="mb-4 text-left">
+    <h1 className="text-5xl font-serif mb-6 flex items-center justify-start text-beige-text-heading">
+      <Terminal className="mr-2" />
+      The mcp server, discovery
+    </h1>
+    <p className="text-beige-text-secondary text-md">
+      Find the right mcp server for you from <Link href="/registry" className="font-semibold text-orange-500 hover:text-cyan-600 transition-colors">250+ servers</Link> collected
+    </p>
+  </div>
+)
 
+const SearchForm = ({
+  searchQuery,
+  onSearchChange,
+  onSubmit,
+  loading,
+  aiPrompt,
+  onAiPromptChange,
+}: {
+  searchQuery: string
+  onSearchChange: (value: string) => void
+  onSubmit: () => void
+  loading: boolean
+  aiPrompt: boolean
+  onAiPromptChange: (checked: boolean) => void
+}) => (
+  <div className="relative flex w-full mb-8">
+    <textarea
+      placeholder={`Describe your task in few words
+        \neg: I need to look up flight information`}
+      value={searchQuery}
+      onChange={(e) => onSearchChange(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          onSubmit();
+        }
+      }}
+      className="text-sm w-full h-48 min-h-14 bg-white border-beige-textarea-border border-2 text-beige-text-primary placeholder-beige-input-placeholder rounded-none focus:outline-none px-4 py-2 resize-y"
+    />
+    <div className="absolute left-4 bottom-2 flex items-center space-x-2">
+      <Switch
+        checked={aiPrompt}
+        onCheckedChange={onAiPromptChange}
+        className="data-[state=checked]:bg-orange-500 h-4 w-8"
+        disabled={true}
+      />
+      <label className="text-sm font-medium leading-none text-beige-text-secondary">
+        AI Prompt
+      </label>
+    </div>
+    <Button 
+      onClick={onSubmit}
+      className="absolute right-2 bottom-2 bg-orange-500 hover:bg-cyan-600 text-white font-mono text-md rounded-none px-4 py-2 flex items-center gap-3"
+      disabled={loading}
+    >
+      <Search className="!size-5" />
+      SEARCH
+    </Button>
+  </div>
+)
+
+const PopularSearches = ({ searches, onClick }: { searches: RecentSearch[], onClick: (description: string) => void }) => (
+  <div className="space-y-3">
+    <div className="flex items-center gap-2 text-sm">
+      <span className="text-muted-foreground">$ Popular searches</span>
+    </div>
+    <div className="flex flex-wrap gap-3">
+      {searches.map(search => (
+        <button
+          key={search.id}
+          onClick={() => onClick(search.description)}
+          className="px-2 py-1 text-xs text-left border border-black hover:bg-accent/50 transition-colors whitespace-nowrap"
+        >
+          {search.description}
+        </button>
+      ))}
+    </div>
+  </div>
+)
+
+const Footer = () => (
+  <div className="mt-8 text-xs text-beige-text-secondary text-center">
+    <p>Mcp Compass v1.0.0 | Powered by React & Next.js</p>
+    <p>{new Date().getFullYear()} Mcp Club by Weight Wave</p>
+  </div>
+)
+
+export default function DiscoveryPage() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('description') || '')
+  const [aiPrompt, setAiPrompt] = useState(true)
+  const { servers, error, loading, notFound, handleRecommendV2: performSearch, reset } = useMCPServers()
+  const { toast } = useToast()
+
+  // Update search description and perform search when URL changes
   useEffect(() => {
-    loadServers();
-  }, [loadServers]);
-
-  useEffect(() => {
-    const query = searchParams.get('search') || '';
-    setSearchQuery(query);
-    if (query.trim()) {
-      handleSearch(query);
-    } else {
-      loadServers();
+    const description = searchParams.get('description')
+    const ai = searchParams.get('ai')
+    if (description !== null) {
+      setSearchQuery(description)
+      setAiPrompt(ai === 'true')
+      performSearch(description)
     }
-  }, [searchParams]);
+  }, [searchParams])
 
-  const handleCategoryClick = (category: string) => {
-    setSelectedCategory(selectedCategory === category ? null : category);
-  };
+  // Debounced search effect
+  useEffect(() => {
+    if (searchQuery) {
+      return
+    }
+    const timeoutId = setTimeout(() => {
+      handleSearch()
+    }, 400);
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
 
-  if (loading) {
-    return <Spinner />;
+  useEffect(() => {
+    toast({
+      title: "Coming Soon!",
+      description: "Install mcp server easily - Client for Desktop",
+      className: "bg-beige-background border-beige-textarea-border",
+    })
+  }, [])
+
+  const handleSearch = () => {
+    const params = new URLSearchParams()
+    if (searchQuery) {
+      params.set('description', searchQuery)
+      params.set('ai', aiPrompt.toString())
+    } else {
+      reset() // Reset the servers state when there's no description
+    }
+    router.push(`?${params.toString()}`)
   }
 
-  if (error) {
-    return <ErrorDisplay message={error} />;
+  const handlePopularSearchClick = (description: string) => {
+    setSearchQuery(description)
+    handleSearch()
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <HubNavbar 
-        searchQuery={searchQuery}
-        onSearch={handleSearch}
-      />
-      
-      <main className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
-          {/* Category Sidebar */}
-          {!notFound && (
-            <CategoryList 
-              selectedCategory={selectedCategory} 
-              handleCategoryClick={handleCategoryClick} 
-              categoriesMap={categoriesMap} 
-            />
+    <>
+      <DiscoveryNavbar />
+      <main className="min-h-screen pt-24 bg-beige-background text-beige-text-primary font-mono p-8 flex flex-col items-center justify-center">
+        <div className="w-full max-w-2xl">
+          <SearchHeader />
+          <SearchForm 
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onSubmit={handleSearch}
+            loading={loading}
+            aiPrompt={aiPrompt}
+            onAiPromptChange={setAiPrompt}
+          />
+          {error && (
+            <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
+              {error}
+            </div>
           )}
-          
-          {/* Server Grid or Empty State */}
-          <div className="flex-1">
-            {!notFound ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredServers.map((server, index) => (
-                  <ServerCard key={server.id} server={server} index={index} />
-                ))}
+          {notFound && (
+            <div className="mt-4 text-center">
+              <div className="inline-flex items-center gap-2 text-beige-text-secondary">
+                <Bird className="size-5" />
+                <span>No servers found</span>
               </div>
-            ) : (
-              <div className="h-[80vh] flex flex-col items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow p-8">
-                <svg className="w-16 h-16 text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No results found</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-center">
-                  We couldn&apos;t find any servers matching your search. Try adjusting your search terms.
-                </p>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
+          {loading && (
+            <div className="mt-4">
+              <Loading />
+            </div>
+          )}
+          {servers.length > 0 && (
+            <div className="mt-8 space-y-4">
+              {servers.map((server) => (
+                <ServerCard key={server.id} server={server} />
+              ))}
+            </div>
+          )}
+          {!searchQuery && <PopularSearches searches={RECENT_SEARCHES} onClick={handlePopularSearchClick} />}
+          <Footer />
         </div>
       </main>
-    </div>
-  );
+      <Toaster />
+    </>
+  )
 }
