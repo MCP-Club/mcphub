@@ -28,7 +28,7 @@ const DiscoveryNavbar = ({ className }: HubNavbarProps) => (
             href="/"
             className="text-beige-text-secondary hover:text-orange-500 px-3 py-2 text-sm font-medium"
           >
-            Registry
+            All servers
           </Link>
           <a
             href="https://modelcontextprotocol.io/quickstart"
